@@ -1,19 +1,29 @@
 import React from 'react';
 import PostListItem from '../post-list-item/';
-import './post-list.js';
+import './post-list.css';
 
-const PostList = ({posts}) => {
+const PostList = ({posts, onDelete, onToggleImportant, onToggleLiked}) => {
     let elements = posts.map((element) => {
         if(typeof element === 'object' && isEmpty(element)){
+            const {id, ...itemProps} = element;
             return(
-                <li className="list-group-item">
+                <li key={id} className="list-group-item">
                     <PostListItem 
-                        label={element.label} 
-                        important={element.important} 
+                        {...itemProps}
+                        onDelete={() => {
+                            onDelete(id);
+                        }}
+                        onToggleImportant={() => {
+                            onToggleImportant(id);
+                        }}
+                        onToggleLiked={() => {
+                            onToggleLiked(id);
+                        }}
                     />
                 </li>
             )
         }
+        return null;
     });
 
     function isEmpty(obj) {
